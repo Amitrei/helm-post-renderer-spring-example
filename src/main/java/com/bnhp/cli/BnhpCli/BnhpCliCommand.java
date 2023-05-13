@@ -58,14 +58,13 @@ public class BnhpCliCommand implements Callable<Integer> {
     public void executeManifestEnrich() throws IOException {
 
         String input = Utils.getUserInputWithTimeout(5);
+        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        KubernetesDeserializer kubernetesDeserializer = new KubernetesDeserializer();
 
         if (Objects.nonNull(input)) {
             for (String resource : input.split("---")) {
 
                 if (Objects.nonNull(resource) && !resource.equals("null") && !resource.equals("")) {
-
-                    ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-                    KubernetesDeserializer kubernetesDeserializer = new KubernetesDeserializer();
 
                     KubernetesResource kubeResource = kubernetesDeserializer.deserialize(
                             objectMapper.createParser(resource),
