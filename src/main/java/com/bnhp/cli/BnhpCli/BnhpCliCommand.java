@@ -32,10 +32,10 @@ public class BnhpCliCommand implements Callable<Integer> {
 
         if (enrichManifests) {
             try {
-				executeManifestEnrich();
-			} catch (IOException e) {
+                executeManifestEnrich();
+            } catch (IOException e) {
                 return 1;
-			}
+            }
         }
 
         if (executeApiCall) {
@@ -47,37 +47,39 @@ public class BnhpCliCommand implements Callable<Integer> {
 
     public void executeApiRequest() {
 
-            WebClient wb = WebClient.builder()
-                    .baseUrl("https://reqres.in/api/users")
-                    .build();
+        WebClient wb = WebClient.builder()
+                .baseUrl("https://reqres.in/api/users")
+                .build();
 
-            UsersResponse block = wb.get().retrieve().bodyToMono(UsersResponse.class).block();
-            System.out.println(block);
+        UsersResponse block = wb.get().retrieve().bodyToMono(UsersResponse.class).block();
+        System.out.println(block);
     }
 
-    public void executeManifestEnrich() throws IOException{
+    public void executeManifestEnrich() throws IOException {
 
-            String input = Utils.getUserInputWithTimeout(5);
+        String input = Utils.getUserInputWithTimeout(5);
 
-            if (Objects.nonNull(input)) {
-                for (String resource : input.split("---")) {
+        if (Objects.nonNull(input)) {
+            for (String resource : input.split("---")) {
 
-                    if (Objects.nonNull(resource) && !resource.equals("null") && !resource.equals("")) {
+                if (Objects.nonNull(resource) && !resource.equals("null") && !resource.equals("")) {
 
-                        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-                        KubernetesDeserializer kubernetesDeserializer = new KubernetesDeserializer();
+                    ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+                    KubernetesDeserializer kubernetesDeserializer = new KubernetesDeserializer();
 
-                        KubernetesResource kubeResource = kubernetesDeserializer.deserialize(objectMapper.createParser(resource),
-                                objectMapper.getDeserializationContext());
+                    KubernetesResource kubeResource = kubernetesDeserializer.deserialize(
+                            objectMapper.createParser(resource),
+                            objectMapper.getDeserializationContext());
 
-                        if (kubeResource instanceof HasMetadata hasMetadata) {
-                            if (hasMetadata.getKind().equalsIgnoreCase("deployment")) {
-                                hasMetadata.getMetadata().setAnnotations(Map.of("bnhp.co.il/custom-annotation", "custom-annotation"));
-                            }
-                            System.out.println(objectMapper.writeValueAsString(kubeResource));
+                    if (kubeResource instanceof HasMetadata hasMetadata) {
+                        if (hasMetadata.getKind().equalsIgnoreCase("deployment")) {
+                            hasMetadata.getMetadata()
+                                    .setAnnotations(Map.of("bnhp.co.il/custom-annotation", "custom-annotation"));
                         }
+                        System.out.println(objectMapper.writeValueAsString(kubeResource));
                     }
                 }
             }
+        }
     }
 }
