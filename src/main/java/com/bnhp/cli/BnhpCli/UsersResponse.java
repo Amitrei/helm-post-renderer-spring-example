@@ -5,22 +5,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MyResponse {
+public class UsersResponse {
 
-    private List<MyObject> data;
+    private List<User> data;
 
-    public MyResponse(List<MyObject> data) {
+    public UsersResponse(List<User> data) {
         this.data = data;
     }
 
-    public MyResponse() {
+    public UsersResponse() {
     }
 
-    public List<MyObject> getData() {
+    public List<User> getData() {
         return data;
     }
 
-    public void setData(List<MyObject> data) {
+    public void setData(List<User> data) {
         this.data = data;
     }
 

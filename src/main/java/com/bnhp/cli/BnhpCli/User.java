@@ -1,14 +1,14 @@
 package com.bnhp.cli.BnhpCli;
 
 
-public class MyObject {
+public class User {
     int id;
     String email;
     String first_name;
     String last_name;
     String avatar;
 
-    public MyObject(int id, String email, String first_name, String last_name, String avatar) {
+    public User(int id, String email, String first_name, String last_name, String avatar) {
         this.id = id;
         this.email = email;
         this.first_name = first_name;
@@ -16,7 +16,7 @@ public class MyObject {
         this.avatar = avatar;
     }
 
-    public MyObject() {
+    public User() {
     }
 
     public int getId() {

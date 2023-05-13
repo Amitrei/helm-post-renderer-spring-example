@@ -2,7 +2,6 @@ package com.bnhp.cli.BnhpCli;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -26,8 +25,10 @@ public class Utils {
 
         if (clazz.getCanonicalName().contains(packageName)) {
             classes.add(clazz);
-            Arrays.stream(clazz.getClasses())
-                    .forEach(aClass -> populateWithNestedClasses(classes, aClass, packageName));
+
+            for (Class<?> aClass : clazz.getClasses()) {
+                populateWithNestedClasses(classes, aClass, packageName);
+            }
         }
 
     }

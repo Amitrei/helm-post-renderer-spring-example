@@ -18,15 +18,15 @@ import picocli.CommandLine.IFactory;
 
 @SpringBootApplication
 
-@RegisterReflectionForBinding({ MyObject.class, MyResponse.class })
+@RegisterReflectionForBinding({ User.class, UsersResponse.class })
 @ImportRuntimeHints(MyRuntimeHints.class)
 public class BnhpCliApplication implements CommandLineRunner, ExitCodeGenerator {
 
     private int exitCode;
-    private MyCommand command;
+    private BnhpCliCommand command;
     private IFactory factory;
 
-    public BnhpCliApplication(MyCommand mCommand, IFactory factory) {
+    public BnhpCliApplication(BnhpCliCommand mCommand, IFactory factory) {
         this.command = mCommand;
         this.factory = factory;
     }
@@ -47,7 +47,8 @@ public class BnhpCliApplication implements CommandLineRunner, ExitCodeGenerator 
 
     }
 }
-class MyRuntimeHints implements RuntimeHintsRegistrar {
+
+final class MyRuntimeHints implements RuntimeHintsRegistrar {
 
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
